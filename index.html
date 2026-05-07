@@ -509,6 +509,16 @@ document.getElementById('fileInput').addEventListener('change', e => {
   e.target.value = '';
 });
 
+// Re-smooth whenever any control changes (only if data is already plotted)
+function reprocessIfActive() {
+  if (!smoothedData.length) return;
+  window.processData();
+}
+
+document.getElementById('radiusInput').addEventListener('input', reprocessIfActive);
+document.getElementById('algorithmSelect').addEventListener('change', reprocessIfActive);
+document.getElementById('falloffSelect').addEventListener('change', reprocessIfActive);
+
 // Load sample data on start
 const sample = [null,3,5,9,11,16,18,22,24,22,18,16,11,9,5,3,null].map(
   (v, i) => v === null ? '' : String(v)
