@@ -331,6 +331,8 @@ function parseData(text) {
     const parts = line.split(/[,\t]/).map(s => s.trim());
     if (parts.length >= 2) {
       const num = parseFloat(parts[parts.length - 1]);
+      // Skip header row: last column is non-numeric text and no data yet
+      if (isNaN(num) && yVals.length === 0) continue;
       xVals.push(parts.slice(0, parts.length - 1).join(','));
       yVals.push(isNaN(num) ? null : num);
     } else {
@@ -341,6 +343,8 @@ function parseData(text) {
         yVals.push(null);
       } else {
         const num = parseFloat(parts[0]);
+        // Skip header row: non-numeric text and no data yet
+        if (isNaN(num) && yVals.length === 0) continue;
         if (isNaN(num)) throw new Error(`Line ${i + 1}: "${line}" is not a valid number.`);
         xVals.push(String(xVals.length + 1));
         yVals.push(num);
